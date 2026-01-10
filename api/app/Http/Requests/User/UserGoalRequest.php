@@ -26,15 +26,20 @@ class UserGoalRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'goal' => ['required', new Enum(TypeGoalUpdate::class)]
+            'user_id' => ['sometimes', 'exists:App\\Models\\User,id'], 
+            'goal' => ['required', new Enum(TypeGoalUpdate::class)],
+            'value_goal' =>  ['sometimes', 'numeric']
         ];
     }
 
     public function messages()
     {
         return [
+            'user_id.exists' => 'O identificador do usuário não existe!',
             'goal.required' => 'O tipo do ponto é obrigatório!',
-            'goal.enum' => 'O tipo de ponto é inválido!'
+            'goal.enum' => 'O tipo de ponto é inválido!',
+            'value_goal.numeric' => 'O valor da meta precisar estar em um formato válido!'
+
         ];
     }
 }

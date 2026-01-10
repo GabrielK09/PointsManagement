@@ -6,6 +6,7 @@ use App\Enum\UseCase\UserGoal\TypeGoalUpdate;
 use App\Models\User;
 use App\Repositories\Interfaces\User\UserContract;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class UserRepository implements UserContract
 {
@@ -33,63 +34,38 @@ class UserRepository implements UserContract
         return $user;
     }
 
-    public function updateGoal(array $data, int $userId): User
+    public function updateGoal(array $data, int $userId)
     {
         $user = $this->findById($userId);
         
-        switch ($data['goal']) {
-            case TypeGoalUpdate::PULLED->value:
-                $user->update([
-                    TypeGoalUpdate::PULLED->value => $user->TypeGoalUpdate::PULLED->value ? $user->pulled + 1 : 1
-                ]);
+        $map = [
+            TypeGoalUpdate::PULLED->value   => 'pulled',
+            TypeGoalUpdate::CALLED->value   => 'called',
+            TypeGoalUpdate::WHATSAPP->value => 'whatsApp',
+            TypeGoalUpdate::INDICATE->value => 'indicate',
+            TypeGoalUpdate::XREMOTE->value  => 'xremote',
+            TypeGoalUpdate::CHAT->value     => 'chat',
+        ];
 
-                $user->save();
-                break;
-
-            case TypeGoalUpdate::CALLED->value:
-                $user->update([
-                    TypeGoalUpdate::CALLED->value => $user->TypeGoalUpdate::CALLED->value ? $user->pulled + 1 : 1
-                ]);
-
-                $user->save();
-                break;
-
-            case TypeGoalUpdate::WHATSAPP->value:
-                $user->update([
-                    TypeGoalUpdate::WHATSAPP->value => $user->TypeGoalUpdate::WHATSAPP->value ? $user->pulled + 1 : 1
-                ]);
-
-                $user->save();
-                break;
-
-            case TypeGoalUpdate::INDICATE->value:
-                $user->update([
-                    TypeGoalUpdate::INDICATE->value => $user->TypeGoalUpdate::INDICATE->value ? $user->pulled + 1 : 1
-                ]);
-
-                $user->save();
-                break;
-
-            case TypeGoalUpdate::XREMOTE->value:
-                $user->update([
-                    TypeGoalUpdate::XREMOTE->value => $user->TypeGoalUpdate::XREMOTE->value ? $user->pulled + 1 : 1
-                ]);
-
-                $user->save();
-                break;
-
-            case TypeGoalUpdate::CHAT->value:
-                $user->update([
-                    TypeGoalUpdate::CHAT->value => $user->TypeGoalUpdate::CHAT->value ? $user->pulled + 1 : 1
-                ]);
-
-                $user->save();
-                break;
-    
-            default:
-                return $user;
+        if (!isset($map[$data['goal']])) {
+            return $user;
         }
-        return $user;
+
+        $user->increment(
+            $map[$data['goal']],
+            $data['value_goal']
+        );
+
+        return $user->only([
+            'name',
+            'team',
+            'pulled',
+            'called',
+            'whatsApp',
+            'indicate',
+            'xremote',
+            'chat',
+        ]);
     }
 
     public function findById(int $id): ?User

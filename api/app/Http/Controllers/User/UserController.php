@@ -30,7 +30,9 @@ class UserController extends Controller
 
     public function updateGoal(UserGoalRequest $req)
     {
-        return apiSuccess('Meta atualizada com sucesso!', $this->userSerivce->updateGoal($req->validated(), $req->user()->id));
+        $id = !empty($req->input('user_id')) ? $req->input('user_id') : $req->user()->id;
+
+        return apiSuccess('Meta atualizada com sucesso!', $this->userSerivce->updateGoal($req->validated(), $id));
     }
 
     /**
