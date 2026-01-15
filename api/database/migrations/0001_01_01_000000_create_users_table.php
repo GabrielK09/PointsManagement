@@ -27,7 +27,6 @@ return new class extends Migration
                 'Marrom',
                 'Laranja',
                 'Amarelo'
-
             ]);
 
             $table->boolean('is_a_leader')->default(0);

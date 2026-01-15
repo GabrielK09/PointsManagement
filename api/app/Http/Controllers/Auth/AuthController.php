@@ -18,7 +18,7 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $req)
     {
-        return apiSuccess('Usuário cadastrado com sucesso!', $this->userService->store($req->validated()));
+        return apiSuccess('Usuário cadastrado com sucesso!', $this->userService->store($req->validated(), $req->user()->id), true, 201);
     }
 
     public function login(Request $req)
@@ -26,7 +26,7 @@ class AuthController extends Controller
         $data = $req->validate([
             'email' => 'required|email',
             'password' => 'required'
-            
+
         ], [
             'email.required' => AuthMessages::EMAIL_REQUIRED,
             'email.email' => AuthMessages::EMAIL_FORMAT,
@@ -41,7 +41,7 @@ class AuthController extends Controller
             throw ValidationException::withMessages([
                 'message' => 'Credenciais incorretas.'
             ]);
-        } 
+        }
 
         $token = $user->createToken('api-token')->plainTextToken;
 

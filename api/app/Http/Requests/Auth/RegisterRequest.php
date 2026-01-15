@@ -2,9 +2,12 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Enum\User\UserTeams;
+use App\Models\User;
 use App\Messages\Auth\AuthMessages;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class RegisterRequest extends FormRequest
 {
@@ -25,17 +28,13 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:120'],
-            'email' => ['required', 'email', 'unique:App\\Models\\User,email'],
-            'team' => ['required', 'string', Rule::in([
-                'Cinza',
-                'Azul',
-                'Verde',
-                'Vermelho',
-                'Roxo',
-                'Marrom',
-                'Laranja',
-                'Amarelo'
-            ])],
+            'email' => [
+                'required',
+                'email',
+                Rule::unique(User::class, 'email')->ignore($this->user),
+            ],
+
+            'team' => ['required', 'string', new Enum(UserTeams::class)],
             'password' => ['required', 'string', 'min:8', 'max:120'],
         ];
     }
@@ -53,7 +52,7 @@ class RegisterRequest extends FormRequest
 
             'team.required' => AuthMessages::TEAM_REQUIRED->value,
             'team.string' => AuthMessages::TEAM_FORMAT->value,
-            'team.in' => AuthMessages::TEAM_IN->value,
+            'team.enum' => AuthMessages::TEAM_IN->value,
 
             'password.required' => AuthMessages::PASSWORD_REQUIRED->value,
             'password.string' => AuthMessages::PASSWORD_FORMAT->value,

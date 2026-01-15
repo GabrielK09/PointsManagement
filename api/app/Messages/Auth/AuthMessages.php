@@ -19,5 +19,5 @@ enum AuthMessages: string
 
     case TEAM_REQUIRED = 'O time do usuário é obrigatório!';
     case TEAM_FORMAT = 'O time do usuário precisa estar em um formato válido!';
-    case TEAM_IN = 'O time do usuário precisa estar conter um desses valores Cinza, Azul, Verde, Vermelho, Roxo, Marrom, Laranja, Amarelo';
+    case TEAM_IN = 'O time do usuário precisa estar conter um desses valores: Cinza, Azul, Verde, Vermelho, Roxo, Marrom, Laranja, Amarelo';
 }

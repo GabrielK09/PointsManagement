@@ -24,11 +24,11 @@ class User extends Authenticatable
         'password',
         'team',
         'is_a_leader',
-        'pulled', 
-        'called', 
-        'whatsApp', 
-        'indicate', 
-        'xremote', 
+        'pulled',
+        'called',
+        'whatsApp',
+        'indicate',
+        'xremote',
         'chat'
     ];
 
@@ -40,6 +40,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'created_at',
+        'updated_at'
     ];
 
     protected $casts = [

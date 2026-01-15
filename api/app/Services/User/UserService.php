@@ -2,17 +2,25 @@
 
 namespace App\Services\User;
 
+use App\Exceptions\User\TimeNotAssociatedWithTheUser;
 use App\Repositories\Interfaces\User\UserContract;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Validation\UnauthorizedException;
 class UserService
 {
     public function __construct(
         protected UserContract $userRepository
     ){}
 
-    public function store(array $data)
+    public function store(array $data, string $userId)
     {
+        $user = $this->findById($userId);
+
+        if(!$user->is_a_leader)
+        {
+            throw new UnauthorizedException('Ação não permetida para esse usuário!');
+        }
+
         return DB::transaction(fn() => $this->userRepository->store($data));
     }
 
@@ -33,6 +41,35 @@ class UserService
 
     public function findByMail($email)
     {
-        return $this->userRepository->findByMail($email);
+        $user = $this->userRepository->findByMail($email);
+
+        if(!$user)
+        {
+            throw new \App\Exceptions\User\IncorrectCredentials('Credenciais incorretas.');
+        }
+
+        return $user;
+    }
+
+    public function resetAllGoal(string $team, int $userId)
+    {
+        $user = $this->findById($userId);
+
+        if(!$user->is_a_leader)
+        {
+            throw new UnauthorizedException('Ação não permetida para esse usuário!');
+        }
+
+        if($user->team !== $team)
+        {
+            throw new TimeNotAssociatedWithTheUser('Time diferente do usuário!');
+        }
+
+        return DB::transaction(fn() => $this->userRepository->resetAllGoal($team, $userId));
+    }
+
+    public function delete(string $userId)
+    {
+        return DB::transaction(fn() => $this->userRepository->delete($userId));
     }
 }

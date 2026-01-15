@@ -1,4 +1,8 @@
 {
-    "goal": "pulled",
-    "value_goal": 10
+    "pulled": 10,
+    "called": 10,
+    "whatsApp": 10,
+    "indicate": 10,
+    "xremote": 10,
+    "chat": 10
 }

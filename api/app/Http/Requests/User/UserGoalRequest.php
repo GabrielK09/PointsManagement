@@ -2,11 +2,8 @@
 
 namespace App\Http\Requests\User;
 
-use App\Enum\UseCase\UserGoal\TypeGoalUpdate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Enum;
 
 class UserGoalRequest extends FormRequest
 {
@@ -26,9 +23,13 @@ class UserGoalRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['sometimes', 'exists:App\\Models\\User,id'], 
-            'goal' => ['required', new Enum(TypeGoalUpdate::class)],
-            'value_goal' =>  ['sometimes', 'numeric']
+            'user_id' => ['sometimes', 'exists:App\\Models\\User,id'],
+            'pulled' =>  ['sometimes', 'numeric'],
+            'called' =>  ['sometimes', 'numeric'],
+            'whatsApp' =>  ['sometimes', 'numeric'],
+            'indicate' =>  ['sometimes', 'numeric'],
+            'xremote' =>  ['sometimes', 'numeric'],
+            'chat' =>  ['sometimes', 'numeric'],
         ];
     }
 
@@ -36,10 +37,12 @@ class UserGoalRequest extends FormRequest
     {
         return [
             'user_id.exists' => 'O identificador do usuário não existe!',
-            'goal.required' => 'O tipo do ponto é obrigatório!',
-            'goal.enum' => 'O tipo de ponto é inválido!',
-            'value_goal.numeric' => 'O valor da meta precisar estar em um formato válido!'
-
+            'pulled.numeric' => 'O valor de puxei precisa ser um número!',
+            'called.numeric' => 'O valor de liguei precisa ser um número!',
+            'whatsApp.numeric' => 'O valor de whatsApp precisa ser um número!',
+            'indicate.numeric' => 'O valor de indique e ganhe precisa ser um número!',
+            'xremote.numeric' => 'O valor de xremote precisa ser um número!',
+            'chat.numeric' => 'O valor de chat precisa ser um número!',
         ];
     }
 }
