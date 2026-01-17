@@ -64,6 +64,16 @@ class Handler extends ExceptionHandler
             );
         }
 
+        if($e instanceof \App\Exceptions\Goal\GoalTypeNotFound)
+        {
+            return apiError(
+                $e->getMessage(),
+                [],
+                false,
+                404
+            );
+        }
+
         return apiError(
             'Erro interno.',
             [

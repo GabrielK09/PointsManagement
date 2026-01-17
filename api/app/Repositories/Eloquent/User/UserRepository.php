@@ -23,6 +23,7 @@ class UserRepository implements UserContract
     public function update(array $data, int $userId): mixed
     {
         $user = $this->findById($userId);
+
         $user->update([
             'name' => $data['name'],
             'team' => $data['team'],
