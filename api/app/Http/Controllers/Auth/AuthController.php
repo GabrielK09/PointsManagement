@@ -28,10 +28,10 @@ class AuthController extends Controller
             'password' => 'required'
 
         ], [
-            'email.required' => AuthMessages::EMAIL_REQUIRED,
-            'email.email' => AuthMessages::EMAIL_FORMAT,
+            'email.required' => AuthMessages::EMAIL_REQUIRED->value,
+            'email.email' => AuthMessages::EMAIL_FORMAT->value,
 
-            'password.required' => AuthMessages::PASSWORD_REQUIRED
+            'password.required' => AuthMessages::PASSWORD_REQUIRED->value
         ]);
 
         $user = $this->userService->findByMail($data['email']);

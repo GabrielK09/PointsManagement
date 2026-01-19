@@ -18,9 +18,28 @@ export async function loginService(email: string, password: string): Promise<Ret
 
     } catch (error) {
         return returnResApi(
-            true,
+            false,
             error.response?.data?.message,
             []
         );      
     };
+};
+
+export async function logoutService(): Promise<ReturnResApi> {
+    try {
+        const res = await api.post('/auth/logout');
+
+        return returnResApi(
+            true,
+            res.data.message,
+            res.data.data,
+        );
+
+    } catch (error) {
+        return returnResApi(
+            false,
+            error.response?.data?.message,
+            []
+        );      
+    };   
 };

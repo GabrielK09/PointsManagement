@@ -5,7 +5,6 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Log;
 use Throwable;
-
 class Handler extends ExceptionHandler
 {
     public function render($request, Throwable $e)
@@ -73,6 +72,13 @@ class Handler extends ExceptionHandler
                 404
             );
         }
+
+        Log::error('Erro: ', [
+            'error' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'code' => $e->getCode()
+        ]);        
 
         return apiError(
             'Erro interno.',

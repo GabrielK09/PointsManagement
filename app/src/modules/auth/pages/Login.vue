@@ -26,14 +26,14 @@
                     label="Senha" 
                     stack-label
                     class="input-password"
-                    no-error-icon
+                    :no-error-icon="!formErrors.password"
                     :error="!!formErrors.password"
                     :error-message="formErrors.password"
                     :rules="[
                         val => !!val || 'Informe a sua senha!'
                     ]"
                 >
-                    <template v-slot:append>
+                    <template v-slot:append v-if="!formErrors.password">
                         <svg 
                             v-if="!showPassword"
                             @click="showPassword = !showPassword"
@@ -100,8 +100,8 @@
     const formErrors = ref<Record<string, string>>({});
 
     const loginSchema = Yup.object({
-        email: Yup.string().required('O e-mail é necessário!'),
-        password: Yup.string().required('A senha é necessário!')
+        email: Yup.string().required('O e-mail é obrigatório!'),
+        password: Yup.string().required('A senha é obrigatório!')
 
     });
 
@@ -112,43 +112,40 @@
 
     const submitLogin = async () => {
         loadingLogin.value = true;
-
+        const res = await loginService(loginData.value.email, loginData.value.password);
+        
         try {        
             await loginSchema.validate(loginData.value, { abortEarly: false });
         
             $q.notify({
                 type: 'positive',
                 message: 'Validando dados de login ...',
-                position: 'top',
-                timeout: 200
+                position: 'top'
                 
             }); 
-            
-            const res = await loginService(loginData.value.email, loginData.value.password);
                     
             if(res.success)
             {            
                 LocalStorage.set('auth_token', res.data.token);
-                
-                LocalStorage.set('user_id', res.data.user.id);
-                LocalStorage.set('user', res.data.user.name);
+                LocalStorage.set('user_name', res.data.user.name);
+                LocalStorage.set('user_team', res.data.user.team);
     
                 $q.notify({
                     type: 'positive',
                     message: res.message,
-                    position: 'top',
-                    timeout: 200
+                    position: 'top'
                     
                 });
                 
-                router.replace({ path: '/owners' });
+                router.replace({ 
+                    path: '/points/home' 
+                });
     
             } else {
                 $q.notify({
                     type: 'negative',
                     message: res.message,
-                    position: 'top',
-                    timeout: 350
+                    position: 'top'
     
                 });
             };

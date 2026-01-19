@@ -1,4 +1,7 @@
+import MainLayout from 'src/layouts/MainLayout.vue';
 import Login from 'src/modules/auth/pages/Login.vue';
+import HomePage from 'src/modules/points/pages/HomePage.vue';
+
 import type { RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
@@ -12,6 +15,17 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/login',
         component: Login
+    },
+    {
+        path: '/points',
+        component: MainLayout,
+        children: [
+            {
+                path: 'home',
+                name: 'home',
+                component: HomePage
+            }
+        ]
     },
 
     // Always leave this as last one,
