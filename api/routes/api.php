@@ -19,5 +19,6 @@ Route::prefix('/v1')->group(function() {
 
     Route::middleware('auth:sanctum')->group(function() {
         require_once __DIR__."/user/userApi.php";
+        require_once __DIR__."/goal/goalApi.php";
     });
 });

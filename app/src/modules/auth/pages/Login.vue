@@ -1,9 +1,10 @@
 <template>
     <div class="login-form">
         <q-form
-            class="q-gutter-md bg-gray-50 border rounded-md p-8"
+            class="q-gutter-md bg-gray-50 border border-gray-200 rounded-md p-8"
         >
-            <h3 class="text-center text-2xl">Login</h3>
+            <h4 class="text-center text-xl">Login</h4>
+
             <div class="inputs p-2">
                 <q-input 
                     v-model="loginData.email" 
@@ -64,18 +65,14 @@
             </div>
             
             <div class="flex justify-center">
-                <div class="flex flex-col">
+                <div class="flex flex-col w-full">
                     <q-btn 
                         label="Entrar" 
-                        class="mb-2" 
                         color="primary" 
                         no-caps
                         @click="submitLogin"
                         :loading="loadingLogin"
                     />
-
-                    <span class="text-xs">Ainda não tem uma conta? <span class="text-blue-400 cursor-pointer"><router-link to="/register">Se registre agora!</router-link> </span> </span>
-
                 </div>
             </div>
         </q-form>
