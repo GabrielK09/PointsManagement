@@ -10,6 +10,24 @@ use Illuminate\Support\Facades\Log;
 
 class UserRepository implements UserContract
 {
+    public function getAllForTeam(string $team)
+    {
+        return User::where('team', $team)
+                        ->select(
+                            'id',
+                            'name',
+                            'is_a_leader',
+                            'pulled',
+                            'called',
+                            'whatsApp',
+                            'indicate',
+                            'xremote',
+                            'chat',
+                        )
+                        ->get();
+
+    }
+    
     public function store(array $data): User
     {
         return User::create([

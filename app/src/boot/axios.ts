@@ -29,6 +29,7 @@ const api = axios.create({
 export default boot(({ app, router }) => {
     api.interceptors.request.use(
         (config) => {
+
             const token = LocalStorage.getItem('auth_token');
             
             const isPublicRoutes = [
@@ -55,7 +56,7 @@ export default boot(({ app, router }) => {
             return config;
         },
         (error) => {
-            console.error('Erro: ', error);
+            console.error('axios.ts - error - line 59', error);
             
             return Promise.reject(error);
         }
@@ -64,12 +65,28 @@ export default boot(({ app, router }) => {
     api.interceptors.response.use(
         (response) => response,
         (error) => {
+            console.error('axios.ts - error - line 68', error);
+            
             if(error.response && error.response.status === 401) {
                 router.replace({
                     path: '/login'
 
                 });                
             };
+
+            if(error.response && error.response.status === 500) {
+                app.config.globalProperties.$q.notify({
+                    message: 'Erro interno',
+                    type: 'negative',
+                    position: 'top'
+                }); 
+            };
+
+            app.config.globalProperties.$q.notify({
+                message: error.response?.data?.message || 'Erro na requisição.',
+                type: 'negative',
+                position: 'top'
+            }); 
 
             return Promise.reject(error);
         }

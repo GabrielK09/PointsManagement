@@ -112,17 +112,11 @@
 
     const submitLogin = async () => {
         loadingLogin.value = true;
-        const res = await loginService(loginData.value.email, loginData.value.password);
         
         try {        
-            await loginSchema.validate(loginData.value, { abortEarly: false });
-        
-            $q.notify({
-                type: 'positive',
-                message: 'Validando dados de login ...',
-                position: 'top'
-                
-            }); 
+            await loginSchema.validate(loginData.value, { abortEarly: false });        
+            
+            const res = await loginService(loginData.value.email, loginData.value.password);
                     
             if(res.success)
             {            
@@ -138,16 +132,9 @@
                 });
                 
                 router.replace({ 
-                    path: '/points/home' 
+                    path: '/points' 
                 });
     
-            } else {
-                $q.notify({
-                    type: 'negative',
-                    message: res.message,
-                    position: 'top'
-    
-                });
             };
             
         } catch (error) {

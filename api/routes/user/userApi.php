@@ -8,6 +8,7 @@ Route::prefix('/user')->group(function() {
     Route::post('/create', [AuthController::class, 'register']);
 
     Route::controller(UserController::class)->group(function() {
+        Route::get('/get-all-for-team', 'getAllForTeam');
         Route::get('/show/{id}', 'show');
         Route::put('/update', 'update');
         Route::put('/update/goal', 'updateGoal');

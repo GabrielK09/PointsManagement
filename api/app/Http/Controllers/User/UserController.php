@@ -15,6 +15,11 @@ class UserController extends Controller
         protected UserService $userSerivce
     ){}
 
+    public function getAllForTeam(Request $req)
+    {
+        return apiSuccess(null, $this->userSerivce->getAllForTeam($req->user()->team));
+    }
+
     public function show(string $id)
     {
         return apiSuccess(null, $this->userSerivce->findById($id));

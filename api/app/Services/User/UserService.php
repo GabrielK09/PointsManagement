@@ -12,6 +12,11 @@ class UserService
         protected UserContract $userRepository
     ){}
 
+    public function getAllForTeam(string $team)
+    {
+        return $this->userRepository->getAllForTeam($team);
+    }
+
     public function store(array $data, string $userId)
     {
         $user = $this->findById($userId);

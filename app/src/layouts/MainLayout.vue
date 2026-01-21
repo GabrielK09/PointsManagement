@@ -23,7 +23,7 @@
                         v-ripple
                         clickable
                         :key="row.name"
-                        :to="`/admin/${row.path}`"
+                        :to="`/points/${row.path}`"
                         :active="route.path === row.path"
                         class="rounded mt-3"
                         active-class="my-link"
@@ -40,7 +40,7 @@
                 </q-list>
             </q-toolbar>
 
-            <div class="fixed bottom-0 flex flex-center mt-4 bg-[#03202e] fixed-btns">                
+            <div class="fixed bottom-0 flex flex-center mt-4 bg-[#03202e] fixed-logout-button">
                 <q-btn 
                     class="mb-4" 
                     icon="logout" 
@@ -63,7 +63,7 @@
     import { onMounted, ref } from 'vue';
     import { useRoute, useRouter } from 'vue-router';
     import { LocalStorage, useQuasar } from 'quasar';
-import { logoutService } from 'src/modules/auth/services/authService';
+    import { logoutService } from 'src/modules/auth/services/authService';
     
     interface UserRow {
         label: string;
@@ -79,11 +79,7 @@ import { logoutService } from 'src/modules/auth/services/authService';
     
     const userRows = ref<UserRow[]>([
         { label: 'DashBoard', icon: 'dashboard', name: 'dashboard', path: ''},
-        { label: 'Clientes', icon: 'group', name: 'customers', path: 'customers'},
-        { label: 'Técnicos', icon: 'assignment_ind', name: 'assignment_ind', path: 'technicals'},
-        { label: 'Tickets', icon: 'confirmation_number', name: 'ticket', path: 'ticket'},
-        { label: 'Histórico', icon: 'history', name: 'history', path: 'history' },
-        { label: 'Formas de pagamento', icon: 'add_card', name: 'add_card', path: 'pay_ment_forms' },
+        { label: 'Técnicos', icon: 'assignment_ind', name: 'assignment_ind', path: ''},
 
     ]);
 
@@ -137,6 +133,21 @@ import { logoutService } from 'src/modules/auth/services/authService';
         };
     };
 
+    onMounted(() => {
+        if(LocalStorage.getItem('auth_token') === '' || LocalStorage.getItem('auth_token') === null)
+        {
+            $q.notify({
+                message: 'Usuário deslogado.',
+                position: 'top',
+                type: 'negative'
+            });
+
+            router.replace({
+                path: '/login'
+            });
+        };
+    })
+
 </script>
 
 <style lang="scss">
@@ -151,14 +162,16 @@ import { logoutService } from 'src/modules/auth/services/authService';
     }
 
     .fixed-logout-button {
-        display: flex;
+        position: fixed;
+        bottom: 0;
+        margin-left: 3rem;
     }
 
     @media (max-width: 1100px) {
         .fixed-logout-button {
             position: fixed;
             bottom: 0;
-            margin: 0 0 2rem 0;
+            margin-left: 3rem;
         }   
     }
 </style>
