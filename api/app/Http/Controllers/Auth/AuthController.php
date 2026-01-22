@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Exceptions\Auth\NotAuthException;
 use App\Messages\Auth\AuthMessages;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
@@ -49,5 +50,16 @@ class AuthController extends Controller
             'token' => $token,
             'user' => $user
         ]);
+    }
+
+     public function logout(Request $request)
+    {
+        if(!$request->user())
+        {
+            throw new NotAuthException('Usuário não logado.');
+        }
+
+        $request->user()->currentAccessToken()->delete();
+        return apiSuccess('Logout bem sucedido!');
     }
 }

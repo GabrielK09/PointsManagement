@@ -73,12 +73,32 @@ class Handler extends ExceptionHandler
             );
         }
 
+        if($e instanceof \Symfony\Component\Routing\Exception\RouteNotFoundException)
+        {
+            return apiError(
+                'Rota não localizada para essa ação.',
+                [],
+                false,
+                404
+            );
+        }
+
+        if($e instanceof \App\Exceptions\Auth\NotAuthException)
+        {
+            return apiError(
+                $e->getMessage(),
+                [],
+                false,
+                $e->getStatusCode()
+            );
+        }
+
         Log::error('Erro: ', [
             'error' => $e->getMessage(),
             'file' => $e->getFile(),
             'line' => $e->getLine(),
             'code' => $e->getCode()
-        ]);        
+        ]);
 
         return apiError(
             'Erro interno.',

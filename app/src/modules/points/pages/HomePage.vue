@@ -1,113 +1,117 @@
 <template>
-    <div class="card-container bg-[#FBFEF9] rounded-xl">
-        <div class="cards">
-            <div class="flex" v-for="user in users">
+    <div class="card-container bg-[#f2f3f2] rounded-xl">
+        <div v-if="users.length < 1" class="flex flex-center">
+            <q-circular-progress
+                indeterminate
+                size="90px"
+                :thickness="0.2"
+                color="grey-8"
+                center-color="white"
+                track-color="transparent"
+                class="q-ma-md"
+            />
+        </div>
+
+        <div v-else class="cards">
+            <div
+                class="flex card"
+                v-for="user in users"
+            >
                 <q-card class="rounded-xl p-2">
                     <q-card-section>
-                        <div class="text-h6">{{ user.name }}</div>
+                        <div class="text-h6 text-center">{{ user.name }}</div>
 
                     </q-card-section>
 
                     <q-card-section>
-                        <div v-for="btn in btns">
-                            <q-btn
-                                v-if="btn.show"
+                        <div class="flex flex-center gap-4">
+                           <q-btn
                                 no-caps
-                                :color="btn.color || 'black'" 
-                                :label="btn.label" 
+                                label="Puxei"
+                                color="purple"
+                                @click="addGoal('pulled')"
                             >
-                                <span class="ml-4">
-                                    {{ btn.count }}
-                                </span>
-                            </q-btn>        
+                                <span class="ml-2">{{ user.pulled }}</span>
+                            </q-btn>
+
+                            <q-btn
+                                no-caps
+                                label="Liguei"
+                                color="primary"
+                                @click="addGoal('called')"
+                            >
+                                <span class="ml-2">{{ user.called }}</span>
+                            </q-btn>
+
+                            <q-btn
+                                no-caps
+                                label="Whats interno"
+                                color="green"
+                                @click="addGoal('whatsApp')"
+                            >
+                                <span class="ml-2">{{ user.whatsApp }}</span>
+                            </q-btn>
+
+                            <q-btn
+                                no-caps
+                                label="Indiquei"
+                                color="teal"
+                                @click="addGoal('indicate')"
+                            >
+                                <span class="ml-2">{{ user.indicate }}</span>
+                            </q-btn>
+
+                            <q-btn
+                                no-caps
+                                label="Xremote"
+                                color="orange"
+                                @click="addGoal('xremote')"
+                            >
+                                <span class="ml-2">{{ user.xremote }}</span>
+                            </q-btn>
+
+                            <q-btn
+                                no-caps
+                                label="Chat"
+                                color="cyan"
+                                text-color="white"
+                                @click="addGoal('chat')"
+                            >
+                                <span class="ml-2">{{ user.chat }}</span>
+                            </q-btn>
                         </div>
                     </q-card-section>
                 </q-card>
             </div>
         </div>
-
-        <pre>{{ users }}</pre>
     </div>
 </template>
 
 <script setup lang="ts">
     import { onMounted, ref } from 'vue';
-    import { getAllUsersService } from '../services/userServicet';
+     import { getAllUsersService } from '../services/userService';
+    import { useQuasar } from 'quasar';
 
-    interface QBtnAction {
-        label: string;
-        color: string;
-        action: string;
-        icon: string;
-        show: boolean;
-        count: number,
-    };
-
-    const btns = ref<QBtnAction[]>([
-        {
-            label: 'Puxei',
-            action: '',
-            icon: '',
-            color: '',
-            show: true,
-            count: 0,
-        },
-        {
-            label: 'Liguei',
-            action: '',
-            icon: '',
-            color: '',
-            show: true,
-            count: 0,
-        },
-        {
-            label: 'Whats Interno',
-            action: '',
-            icon: '',
-            color: '',
-            show: true,
-            count: 0,
-        },
-        {
-            label: 'Indiquei',
-            action: '',
-            icon: '',
-            color: '',
-            show: true,
-            count: 0,
-        },
-        {
-            label: 'Xremote',
-            action: '',
-            icon: '',
-            color: '',
-            show: true,
-            count: 0,
-        },
-        {
-            label: 'Chat',
-            action: '',
-            icon: '',
-            color: '',
-            show: true,
-            count: 0,
-        },
-        {
-            label: 'SuperBio',
-            action: '',
-            icon: '',
-            color: '',
-            show: false,
-            count: 0,
-        },
-    ]);
-
+    const $q = useQuasar();
     const users = ref<UserContract[]>([]);
-    
+
     const getUsers = async (): Promise<void> => {
         const res = await getAllUsersService();
 
+        if(!res.success)
+        {
+            $q.notify({
+                message: res.message,
+                position: 'top',
+                type: 'negative'
+            });
+        };
+
         users.value = res.data;
+    };
+
+    const addGoal = async (goalType: string): Promise<any> => {
+
     };
 
     onMounted(() => {
@@ -123,17 +127,18 @@
 
         .cards {
             max-width: max-content;
+
         }
-        
+
         @media (min-width: 1100px) {
             .cards {
-                width: 30%;
+                width: 40%;
             }
         }
 
         @media (max-width: 1100px) {
             .cards {
-                width: 70%;
+                width: 50%;
             }
         }
     }

@@ -1,6 +1,7 @@
 import MainLayout from 'src/layouts/MainLayout.vue';
 import Login from 'src/modules/auth/pages/Login.vue';
 import HomePage from 'src/modules/points/pages/HomePage.vue';
+import AllTechnicals from 'src/modules/technicals/pages/AllTechnicals.vue';
 
 import type { RouteRecordRaw } from 'vue-router';
 
@@ -9,7 +10,7 @@ const routes: RouteRecordRaw[] = [
         path: '/',
         component: () => import('src/layouts/MainLayout.vue'),
         children: [
-            
+
         ],
     },
     {
@@ -24,6 +25,11 @@ const routes: RouteRecordRaw[] = [
                 path: '',
                 name: 'home',
                 component: HomePage
+            },
+            {
+                path: 'technicals',
+                name: 'technicals',
+                component: AllTechnicals
             }
         ]
     },

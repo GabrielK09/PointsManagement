@@ -1,10 +1,10 @@
 <template>
     <q-layout view="hHr LpR lFf">
-        <q-btn 
-            @click="drawerLeft = !drawerLeft" 
-            flat 
-            class="rounded" 
-            icon="menu" 
+        <q-btn
+            @click="drawerLeft = !drawerLeft"
+            flat
+            class="rounded"
+            icon="menu"
 
         />
 
@@ -14,11 +14,11 @@
             :width="210"
             class="bg-[#03202e] text-white rounded-r-md dashboard"
         >
-            <span class="flex justify-center mt-4 text-sm">Usuário: {{ LocalStorage.getItem('user_name') }}</span> 
+            <span class="flex justify-center mt-4 text-sm">Usuário: {{ LocalStorage.getItem('user_name') }}</span>
 
             <q-toolbar>
                 <q-list padding class="p-2">
-                    <q-item 
+                    <q-item
                         v-for="row in userRows"
                         v-ripple
                         clickable
@@ -41,10 +41,10 @@
             </q-toolbar>
 
             <div class="fixed bottom-0 flex flex-center mt-4 bg-[#03202e] fixed-logout-button">
-                <q-btn 
-                    class="mb-4" 
-                    icon="logout" 
-                    flat 
+                <q-btn
+                    class="mb-4"
+                    icon="logout"
+                    flat
                     no-caps
                     label="Sair"
                     @click="logoutDialog"
@@ -55,8 +55,8 @@
         <q-page-container>
             <router-view />
         </q-page-container>
-    </q-layout> 
-    
+    </q-layout>
+
 </template>
 
 <script setup lang="ts">
@@ -64,7 +64,7 @@
     import { useRoute, useRouter } from 'vue-router';
     import { LocalStorage, useQuasar } from 'quasar';
     import { logoutService } from 'src/modules/auth/services/authService';
-    
+
     interface UserRow {
         label: string;
         icon: string;
@@ -76,10 +76,10 @@
     const route = useRoute();
     const router = useRouter();
     const drawerLeft = ref<boolean>(true);
-    
+
     const userRows = ref<UserRow[]>([
         { label: 'DashBoard', icon: 'dashboard', name: 'dashboard', path: ''},
-        { label: 'Técnicos', icon: 'assignment_ind', name: 'assignment_ind', path: ''},
+        { label: 'Técnicos', icon: 'assignment_ind', name: 'assignment_ind', path: 'technicals'},
 
     ]);
 
@@ -165,6 +165,7 @@
         position: fixed;
         bottom: 0;
         margin-left: 3rem;
+        margin-bottom: 1rem;
     }
 
     @media (max-width: 1100px) {
@@ -172,6 +173,7 @@
             position: fixed;
             bottom: 0;
             margin-left: 3rem;
-        }   
+            margin-bottom: 1rem;
+        }
     }
 </style>

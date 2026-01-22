@@ -1,11 +1,9 @@
-FROM node:20
-
+FROM node:20.19.6-alpine as develop-stage
 WORKDIR /app
-
-COPY app/ ./
-
-RUN npm install
-
-EXPOSE 9000
-
-CMD ["quasar", "dev"]
+COPY package*.json ./
+RUN npm global add @quasar/cli
+COPY . .
+# build stage
+FROM develop-stage as build-stage
+RUN quasar dev
+# production stage
