@@ -1,8 +1,11 @@
 interface UserContract
 {
-    id: string;
+    readonly id: string;
     name: string;
-    team: string;
+    email: string;
+    password: string;
+    team: ''|'Cinza'|'Azul'|'Verde'|'Vermelho'|'Roxo'|'Marrom'|'Laranja'|'Amarelo';
+
     pulled: number;
     called: number;
     whatsApp: number;

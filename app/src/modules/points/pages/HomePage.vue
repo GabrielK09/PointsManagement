@@ -14,7 +14,7 @@
 
         <div v-else class="cards">
             <div
-                class="flex card"
+                class="card"
                 v-for="user in users"
             >
                 <q-card class="rounded-xl p-2">

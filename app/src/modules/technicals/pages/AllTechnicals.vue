@@ -61,7 +61,7 @@
                                         <q-btn
                                             color="red"
                                             icon="delete"
-
+                                            class="delete-btn"
                                         />
 
                                         <q-menu
@@ -96,7 +96,7 @@
     <RegisterTechnical
         v-if="showTechnicelRegister"
         :show-dialog="showTechnicelRegister"
-        @update:hidden-dialog="showTechnicelRegister = !$event"
+        @update:hidden-dialog="reloadTable(!$event)"
     />
 </template>
 
@@ -173,22 +173,15 @@
 
     };
 
+    const reloadTable = (event: boolean) => {
+        showTechnicelRegister.value = !event;
+        index();
+    };
+
     onMounted(() => {
         index();
     });
 </script>
 
 <style lang="scss">
-    .delete-btn {
-        font-size: .55rem;
-    }
-
-    @media (max-width: 1100px) {
-        .delete-btn,
-        .edit-btn,
-        .attach_money-btn {
-            display: none;
-        }
-    }
-
 </style>

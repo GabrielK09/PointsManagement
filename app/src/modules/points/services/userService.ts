@@ -1,7 +1,7 @@
 import { api } from "src/boot/axios";
 import { returnResApi } from "src/helpers/return/handleApi";
 
-export async function getAllUsersService(): Promise<any> 
+export async function getAllUsersService(): Promise<any>
 {
     try {
         const res = await api.get('/user/get-all-for-team');
@@ -17,6 +17,6 @@ export async function getAllUsersService(): Promise<any>
             false,
             error.response?.data?.message,
             []
-        );      
+        );
     };
 };

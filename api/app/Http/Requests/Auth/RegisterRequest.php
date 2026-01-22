@@ -6,11 +6,20 @@ use App\Enum\User\UserTeams;
 use App\Models\User;
 use App\Messages\Auth\AuthMessages;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
 class RegisterRequest extends FormRequest
 {
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'team' => $this->user()->team ? $this->user()->team : null
+        ]);
+
+    }
     /**
      * Determine if the user is authorized to make this request.
      */

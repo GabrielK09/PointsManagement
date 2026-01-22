@@ -18,7 +18,7 @@ declare module 'vue' {
 // "export default () => {}" function below (which runs individually
 // for each client)
 
-const api = axios.create({ 
+const api = axios.create({
     baseURL: process.env.API_URL,
     headers: {
         Accept: 'application/json',
@@ -31,7 +31,7 @@ export default boot(({ app, router }) => {
         (config) => {
 
             const token = LocalStorage.getItem('auth_token');
-            
+
             const isPublicRoutes = [
                 '/auth/login',
                 '/auth/register',
@@ -57,7 +57,7 @@ export default boot(({ app, router }) => {
         },
         (error) => {
             console.error('axios.ts - error - line 59', error);
-            
+
             return Promise.reject(error);
         }
     );
@@ -66,12 +66,12 @@ export default boot(({ app, router }) => {
         (response) => response,
         (error) => {
             console.error('axios.ts - error - line 68', error);
-            
+
             if(error.response && error.response.status === 401) {
                 router.replace({
                     path: '/login'
 
-                });                
+                });
             };
 
             if(error.response && error.response.status === 500) {
@@ -79,14 +79,8 @@ export default boot(({ app, router }) => {
                     message: 'Erro interno',
                     type: 'negative',
                     position: 'top'
-                }); 
+                });
             };
-
-            app.config.globalProperties.$q.notify({
-                message: error.response?.data?.message || 'Erro na requisição.',
-                type: 'negative',
-                position: 'top'
-            }); 
 
             return Promise.reject(error);
         }
